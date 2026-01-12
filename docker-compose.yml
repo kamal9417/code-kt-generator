@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: kt-generator-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - ANTHROPIC_API_KEY=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
+    volumes:
+      - ./backend:/app
+      - backend-data:/app/data
+      - backend-chroma:/app/chroma_db
+    networks:
+      - kt-network
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: kt-generator-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    networks:
+      - kt-network
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  backend-data:
+  backend-chroma:
+
+networks:
+  kt-network:
+    driver: bridge

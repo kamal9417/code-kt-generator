@@ -1,4 +1,4 @@
-import anthropic
+from openai import OpenAI
 import os
 from typing import List, Dict
 from dotenv import load_dotenv
@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
-client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
+client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
 def create_kt_plan(analyzed_files: List[Dict], role: str) -> Dict:
     """Generate personalized Knowledge Transfer plan"""
@@ -41,8 +41,8 @@ Format as JSON:
 }}
 """
 
-    message = client.messages.create(
-        model="claude-sonnet-4-20250514",
+    response = client.chat.completions.create(
+        model="gpt-4o",
         max_tokens=3000,
         messages=[{"role": "user", "content": prompt}]
     )
@@ -50,8 +50,8 @@ Format as JSON:
     import json
     import re
 
-    # Extract JSON from Claude's response (handle markdown code blocks)
-    response_text = message.content[0].text
+    # Extract JSON from OpenAI's response (handle markdown code blocks)
+    response_text = response.choices[0].message.content
 
     # Try to find JSON in code blocks first
     json_match = re.search(r'```(?:json)?\s*(\{.*?\})\s*```', response_text, re.DOTALL)

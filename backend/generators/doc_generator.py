@@ -1,4 +1,4 @@
-import anthropic
+from openai import OpenAI
 import os
 from typing import List, Dict
 from dotenv import load_dotenv
@@ -6,14 +6,14 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
-client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
+client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
 def generate_documentation(analyzed_files: List[Dict], role: str) -> str:
-    """Generate comprehensive documentation using Claude"""
-    
+    """Generate comprehensive documentation using OpenAI"""
+
     # Prepare context
     context = prepare_context(analyzed_files)
-    
+
     prompt = f"""You are a technical documentation expert. Generate comprehensive, beginner-friendly documentation for this codebase.
 
 Project Analysis:
@@ -31,13 +31,13 @@ Focus on: {role} perspective
 Make it clear for someone new to this codebase.
 """
 
-    message = client.messages.create(
-        model="claude-sonnet-4-20250514",
+    response = client.chat.completions.create(
+        model="gpt-4o",
         max_tokens=4000,
         messages=[{"role": "user", "content": prompt}]
     )
-    
-    return message.content[0].text
+
+    return response.choices[0].message.content
 
 def prepare_context(analyzed_files: List[Dict]) -> str:
     """Convert analysis data to readable context"""
