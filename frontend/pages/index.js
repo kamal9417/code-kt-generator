@@ -21,6 +21,8 @@ export default function Home() {
     setError('');
   };
 
+  const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000';
+
   const handleAnalyze = async () => {
     setError('');
     setLoading(true);
@@ -39,7 +41,7 @@ export default function Home() {
         const formData = new FormData();
         formData.append('file', file);
 
-        response = await fetch(`http://localhost:8000/api/analyze/upload?role=${role}`, {
+        response = await fetch(`${API_URL}/api/analyze/upload?role=${role}`, {
           method: 'POST',
           body: formData
         });
@@ -51,7 +53,7 @@ export default function Home() {
           return;
         }
 
-        response = await fetch('http://localhost:8000/api/analyze/github', {
+        response = await fetch(`${API_URL}/api/analyze/github`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ 

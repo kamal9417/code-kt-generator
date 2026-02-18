@@ -24,6 +24,13 @@ from analyzer.python_analyzer import analyze_python_file
 # ... (keep all previous imports)
 
 app = FastAPI(title="Code KT Generator API", version="2.0.0")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # ... (keep previous code: startup, CORS, etc.)
 
