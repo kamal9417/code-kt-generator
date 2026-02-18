@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+[README.md](https://github.com/user-attachments/files/25383064/README.md)
+>>>>>>> 3edfcd84c03aaa1b2704a6cdcface1e05b13e58b
 # Code KT Generator
 
 An AI-powered tool that automatically generates **Knowledge Transfer (KT) documents** from source code. Point it at a Git repository or upload a ZIP of your codebase, and it produces structured documentation to help teams onboard developers, hand off projects, or preserve institutional knowledge.
